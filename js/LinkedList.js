@@ -154,6 +154,53 @@ class LinkedList {
         return this.#length;
     }
 
+    /**
+     * вставляет значение объекта, по индексу, смещая остальные элементы коллекции
+     * Если индекса не существует в коллекции, генерирует исключение RangeError
+     * @param index
+     * @param value
+     */
+    insert(index, value) {
+        if (index > this.#length - 1 || index < 0) {
+            throw new RangeError('index out of bound error');
+        } else if (index === 0) {
+            this.addFirst(value);
+            return;
+        } else if (index === this.#length - 1) {
+            this.addLast(value);
+            return;
+        }
+
+        let element;
+        if (index < this.#length / 2) {
+            element = this.#findFromHead(index);
+        } else {
+            element = this.#findFromTail(index);
+        }
+
+        const node = new Node(value);
+        element.prev.next = node;
+        element.prev = node;
+        node.prev = element.prev;
+        node.next = element;
+    }
+
+    #findFromHead(index) {
+        let element = this.#head;
+        for (let i = 0; i < index; i++) {
+            element = element.next;
+        }
+        return element;
+    }
+
+    #findFromTail(index) {
+        let element = this.#tail;
+        for (let i = this.#length - 1; i > index; i--) {
+            element = element.prev;
+        }
+        return element;
+    }
+
     [Symbol.iterator]() {
         let current = this.#head;
         return {
