@@ -171,12 +171,7 @@ class LinkedList {
             return;
         }
 
-        let element;
-        if (index < this.#length / 2) {
-            element = this.#findFromHead(index);
-        } else {
-            element = this.#findFromTail(index);
-        }
+        const element = (index < this.#length / 2) ? this.#findFromHead(index) : this.#findFromTail(index);
 
         const node = new Node(value);
         element.prev.next = node;
@@ -215,3 +210,8 @@ class LinkedList {
         };
     }
 }
+
+const numbers = new LinkedList();
+numbers.addFirst(1);
+numbers.insert(0, 3);
+console.log(numbers);
